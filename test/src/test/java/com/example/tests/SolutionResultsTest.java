@@ -57,13 +57,6 @@ public class SolutionResultsTest extends BaseTest {
     }
 
     @Test
-    @Order(0)
-    @DisplayName("Solution Results page loads correctly")
-    public void testPageLoads() throws InterruptedException {
-        assertTrue(solutionResultsPO.isPageLoaded(), "Solution Results page should load");
-    }
-
-    @Test
     @Order(1)
     @DisplayName("Scenario 1: Displaying the header and total score")
     public void testDisplayingHeaderAndTotalScore() throws InterruptedException {

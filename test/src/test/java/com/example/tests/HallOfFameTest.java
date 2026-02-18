@@ -184,30 +184,34 @@ public class HallOfFameTest extends BaseTest {
     
     @Test
     @Order(8)
-    @DisplayName("Rank 1 player should display gold medal icon")
-    public void testRank1HasGoldMedal() {
-        assertTrue(hallOfFamePage.hasGoldMedal(), 
-            "Rank 1 should display gold medal icon");
-        assertTrue(hallOfFamePage.rowHasMedal(0), 
-            "First row should have a medal icon");
+    @DisplayName("Rank 1 player should display gold medal icon if score > 0, otherwise numeric rank")
+    public void testRank1HasGoldMedalOrNumericRank() {
+        PlayerData firstPlayer = hallOfFamePage.getPlayerDataAtRow(0);
+        assertNotNull(firstPlayer, "First player data should be available");
+        double score1 = Double.parseDouble(firstPlayer.getScore());
+        if (score1 > 0) {
+            assertTrue(hallOfFamePage.hasGoldMedal(), "Rank 1 should display gold medal icon if score > 0");
+            assertTrue(hallOfFamePage.rowHasMedal(0), "First row should have a medal icon if score > 0");
+        } else {
+            assertTrue(hallOfFamePage.rowHasNumericRank(0), "First row should have numeric rank if score is 0");
+        }
     }
     
     @Test
     @Order(9)
-    @DisplayName("Rank 2 player should display silver medal if exists")
-    public void testRank2HasSilverMedal() {
-        // Silver medal only shows if there's a rank 2 player (not tied at rank 1)
+    @DisplayName("Rank 2 player should display silver medal if score > 0, otherwise numeric rank")
+    public void testRank2HasSilverMedalOrNumericRank() {
         PlayerData firstPlayer = hallOfFamePage.getPlayerDataAtRow(0);
         PlayerData secondPlayer = hallOfFamePage.getPlayerDataAtRow(1);
-        
         if (firstPlayer != null && secondPlayer != null) {
             double score1 = Double.parseDouble(firstPlayer.getScore());
             double score2 = Double.parseDouble(secondPlayer.getScore());
-            
             if (score1 > score2) {
-                // Second player has lower score, should have silver medal
-                assertTrue(hallOfFamePage.hasSilverMedal(), 
-                    "Rank 2 should display silver medal icon");
+                if (score2 > 0) {
+                    assertTrue(hallOfFamePage.hasSilverMedal(), "Rank 2 should display silver medal icon if score > 0");
+                } else {
+                    assertTrue(hallOfFamePage.rowHasNumericRank(1), "Second row should have numeric rank if score is 0");
+                }
             }
             // If scores are equal, both share rank 1 (gold), no silver - test passes
         }
@@ -215,24 +219,21 @@ public class HallOfFameTest extends BaseTest {
     
     @Test
     @Order(10)
-    @DisplayName("Rank 3 player should display bronze medal if exists")
-    public void testRank3HasBronzeMedal() {
-        // Bronze medal only shows if there's a rank 3 player
+    @DisplayName("Rank 3 player should display bronze medal if score > 0, otherwise numeric rank")
+    public void testRank3HasBronzeMedalOrNumericRank() {
         PlayerData thirdPlayer = hallOfFamePage.getPlayerDataAtRow(2);
-        
         if (thirdPlayer != null) {
-            // Check if first 3 players have different scores (distinct ranks 1,2,3)
             PlayerData firstPlayer = hallOfFamePage.getPlayerDataAtRow(0);
             PlayerData secondPlayer = hallOfFamePage.getPlayerDataAtRow(1);
-            
             double score1 = Double.parseDouble(firstPlayer.getScore());
             double score2 = Double.parseDouble(secondPlayer.getScore());
             double score3 = Double.parseDouble(thirdPlayer.getScore());
-            
             if (score1 > score2 && score2 > score3) {
-                // All three have distinct scores, so rank 3 exists
-                assertTrue(hallOfFamePage.hasBronzeMedal(), 
-                    "Rank 3 should display bronze medal icon");
+                if (score3 > 0) {
+                    assertTrue(hallOfFamePage.hasBronzeMedal(), "Rank 3 should display bronze medal icon if score > 0");
+                } else {
+                    assertTrue(hallOfFamePage.rowHasNumericRank(2), "Third row should have numeric rank if score is 0");
+                }
             }
             // If scores have ties, bronze may not exist - test passes
         }

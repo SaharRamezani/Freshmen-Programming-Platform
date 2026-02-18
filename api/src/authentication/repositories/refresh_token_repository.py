@@ -1,9 +1,3 @@
-"""
-Repository layer for RefreshToken database operations.
-
-Provides methods for creating, validating, and revoking refresh tokens.
-"""
-
 from typing import Optional
 from datetime import datetime
 from sqlalchemy.orm import Session
@@ -11,16 +5,6 @@ from authentication.models.refresh_token import RefreshToken
 
 
 class RefreshTokenRepository:
-    """
-    Repository for RefreshToken database operations.
-    
-    Provides methods for:
-    - Creating refresh tokens
-    - Finding and validating tokens
-    - Revoking tokens (logout/security)
-    - Cleaning up expired tokens
-    """
-
     @staticmethod
     def get_by_id(db: Session, token_id: int) -> Optional[RefreshToken]:
         """

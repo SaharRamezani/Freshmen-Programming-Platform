@@ -29,16 +29,6 @@ from models import Student
 
 logger = logging.getLogger(__name__)
 
-"""
-Business logic layer for authentication domain.
-
-Handles:
-- Token generation (access and refresh tokens)
-- Token validation and verification
-- Google OAuth token verification
-- User authentication workflow
-"""
-
 from authentication.config import (
     ACCESS_TOKEN_EXPIRE_MINUTES,
     REFRESH_TOKEN_EXPIRE_TIMEDELTA,
@@ -53,35 +43,8 @@ from authentication.config import (
 
 
 class AuthService:
-    """
-    Service class for authentication-related operations.
-    
-    Methods:
-    - authenticate_with_google
-    - refresh_access_token
-    - validate_access_token
-    - revoke_refresh_token
-    - revoke_all_user_tokens
-    - issue_access_token
-    - issue_refresh_token
-    - hash_token
-    - generate_random_token
-    """
-
-
-
     @staticmethod
     async def authenticate_with_google(user_info: dict, db: Session) -> Tuple[User, str, str]:
-        """
-        Authenticate user with Google user info from Authlib.
-        
-        Args:
-            user_info: User info dictionary from Google via Authlib
-            db: Database session
-            
-        Returns:
-            Tuple of (User, access_token, refresh_token)
-        """
         google_sub = user_info.get("sub")
         email = user_info.get("email")
         fullname = user_info.get("name", "")

@@ -31,9 +31,6 @@ from student_results_api import _get_test_status
 # ============================================================================
 
 class LeaderboardEntry(BaseModel):
-    """
-    Response model for individual leaderboard entry.
-    """
     rank: int = Field(..., description="Rank position (tied ranks share same number)")
     student_id: int = Field(..., description="ID of the student")
     username: str = Field(..., description="Full name of the student")
@@ -41,9 +38,6 @@ class LeaderboardEntry(BaseModel):
 
 
 class CurrentUserRank(BaseModel):
-    """
-    Response model for current user's rank information.
-    """
     rank: int = Field(..., description="Current user's rank")
     position: int = Field(..., description="1-based position index in the full sorted leaderboard (accounts for ties)")
     score: float = Field(..., description="Current user's score")
@@ -53,9 +47,6 @@ class CurrentUserRank(BaseModel):
 
 
 class LeaderboardResponse(BaseModel):
-    """
-    Response model for paginated leaderboard.
-    """
     total_students: int = Field(..., description="Total number of students")
     total_pages: int = Field(..., description="Total number of pages")
     page: int = Field(..., description="Current page number")

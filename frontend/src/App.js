@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ConfigProvider } from 'antd';
 import HomePage from './components/Home';
 import { CreateMatchForm } from './components/CreateMatchForm';
+import { MatchList } from './components/MatchList';
 import { MatchSettingsList } from './components/MatchSettings';
 import CreateMatchSetting from './components/CreateMatchSetting';
 import { GameSessionCreation } from './components/GameSessionCreation';
@@ -23,19 +24,17 @@ import { SolutionReview } from './components/SolutionReview';
 import SolutionResults from './components/SolutionResults';
 import Profile from './components/Profile';
 import AdminDashboard from './components/AdminDashboard/AdminDashboard';
+import TutorialPage from './components/Tutorials/TutorialPage';
 
 import './App.css';
 
 function App() {
-  // Simple token extraction on app load if present in URL (from OAuth callback)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get('access_token');
     if (token) {
       setToken(token);
-      // Clear URL params and redirect to home (root)
       window.history.replaceState({}, document.title, '/');
-      // Force a page reload to trigger route protection check
       window.location.href = '/';
     }
   }, []);
@@ -86,6 +85,36 @@ function App() {
             {/* Protected routes - require authentication */}
             <Route
               path="/create-match"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <CreateMatchForm />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/matches"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <MatchList />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/matches/:id/edit"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <CreateMatchForm />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/matches/:id/view"
               element={
                 <ProtectedRoute>
                   <AppLayout>
@@ -245,6 +274,16 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/tutorials"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <TutorialPage />
+                  </AppLayout>
                 </ProtectedRoute>
               }
             />

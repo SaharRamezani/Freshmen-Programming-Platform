@@ -10,7 +10,8 @@ import {
   AppstoreOutlined,
   TrophyOutlined,
   FileAddOutlined,
-  SafetyCertificateOutlined
+  SafetyCertificateOutlined,
+  ReadOutlined
 } from "@ant-design/icons";
 import { getToken } from "../../services/authService";
 import "./HomePage.css";
@@ -72,6 +73,15 @@ const HomePage = () => {
       roles: ["teacher"]
     },
     {
+      id: "matches",
+      title: "Matches",
+      description: "Browse, clone, edit, delete, or view your created matches",
+      icon: <UnorderedListOutlined />,
+      route: "/matches",
+      accent: "#0ea5e9",
+      roles: ["teacher"]
+    },
+    {
       id: "create-session",
       title: "Create Game Session",
       description: "Create a new game session for students to join",
@@ -99,6 +109,16 @@ const HomePage = () => {
       route: "/hall-of-fame",
       accent: "#eab308",
       roles: ["teacher", "student"]
+    },
+    // 7. Tutorials
+    {
+      id: "tutorials",
+      title: "Tutorials",
+      description: "Learn how to use the platform with step-by-step guides",
+      icon: <ReadOutlined />,
+      route: "/tutorials",
+      accent: "#14b8a6", // Teal color
+      roles: ["teacher", "student", "admin"]
     },
     // Student specific cards (Student checks use filtering so order here matters less for mixed roles, but good to keep organized)
     {

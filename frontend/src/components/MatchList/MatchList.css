@@ -1,0 +1,113 @@
+/* ===== Page shell (mirrors MatchSettingsList) ===== */
+.match-list-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 24px;
+	min-height: 100vh;
+}
+
+.match-list-card {
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+}
+
+.match-list-card .ant-card-body {
+	padding: 32px;
+}
+
+/* ===== Page header ===== */
+.page-header {
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 8px;
+}
+
+.page-header .ant-typography {
+	margin-bottom: 0;
+}
+
+.page-title {
+	margin: 0;
+	text-align: center;
+}
+
+.subheader {
+	margin-top: 4px;
+	margin-bottom: 16px;
+}
+
+/* ===== Filter bar ===== */
+.filter-bar {
+	padding: 12px 0 8px;
+	border-top: 1px solid rgba(5, 5, 5, 0.06);
+	border-bottom: 1px solid rgba(5, 5, 5, 0.06);
+	margin-bottom: 16px;
+}
+
+.filter-controls {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	flex-wrap: wrap;
+	width: 100%;
+}
+
+.left-filters {
+	display: flex;
+	align-items: center;
+	gap: 24px;
+	flex-wrap: wrap;
+}
+
+.right-filters {
+	margin-left: auto;
+}
+
+/* ===== Table styling ===== */
+.match-list-table .ant-table {
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.match-list-table .ant-table-thead>tr>th {
+	font-weight: 600;
+	background: #fafafa;
+}
+
+.match-list-table .ant-table-tbody>tr:hover>td {
+	background: #f5f9ff;
+}
+
+.match-list-table .ant-table-placeholder {
+	padding: 24px 0;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 992px) {
+	.page-header {
+		grid-template-columns: 1fr;
+		gap: 8px;
+	}
+
+	.page-title {
+		text-align: left;
+	}
+}
+
+@media (max-width: 768px) {
+	.match-list-container {
+		padding: 16px;
+	}
+
+	.match-list-card .ant-card-body {
+		padding: 24px 16px;
+	}
+
+	.filter-bar {
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+}

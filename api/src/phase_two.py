@@ -26,7 +26,6 @@ from code_runner import compile_cpp, run_cpp_executable
 router = APIRouter(prefix="/api/phase-two", tags=["phase-two"])
 
 class ExistingVoteResponse(BaseModel):
-    """Response model for an existing vote on a review."""
     vote: str
     valid: Optional[bool] = None
     proof_test_in: Optional[str] = None
@@ -35,7 +34,6 @@ class ExistingVoteResponse(BaseModel):
 
 
 class AssignedSolutionResponse(BaseModel):
-    """Response model for an assigned solution to review."""
     student_assigned_review_id: int
     assigned_solution_id: int
     code: str

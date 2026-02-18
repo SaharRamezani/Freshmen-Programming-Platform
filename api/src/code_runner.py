@@ -9,27 +9,13 @@ logger = logging.getLogger(__name__)
 NSJAIL_CONFIG_PATH = "/app/nsjail.cfg"
 
 def compile_cpp(code: str) -> Tuple[Optional[str], Optional[str]]:
-    """
-    Compiles C++ code.
-    
-    Args:
-        code (str): The C++ source code.
-        
-    Returns:
-        Tuple[str, str]: (executable_path, error_message)
-        If success, executable_path is set and error_message is None.
-        If failure, executable_path is None and error_message contains stderr.
-    """
-    # Create a temporary file for the source code
     with tempfile.NamedTemporaryFile(mode='w', suffix='.cpp', delete=False) as source_file:
         source_file.write(code)
         source_path = source_file.name
 
-    # Create a temp file for the executable
     executable_path = source_path.replace('.cpp', '.out')
     
     try:
-        # Compile command
         cmd = ["g++", "-O2", "-o", executable_path, source_path]
         
         result = subprocess.run(

@@ -8,19 +8,6 @@ import {
     CheckCircleOutlined
 } from '@ant-design/icons';
 
-/**
- * MatchSettingActionButtons - Action buttons for each match setting row
- * Provides view, clone, edit, delete, and publish actions with confirmations
- * 
- * @param {Object} props
- * @param {Object} props.matchSetting - Match setting data for the row
- * @param {Function} props.onView - Callback for view action
- * @param {Function} props.onClone - Callback for clone action
- * @param {Function} props.onEdit - Callback for edit action
- * @param {Function} props.onDelete - Callback for delete action
- * @param {Function} props.onPublish - Callback for publish action
- * @returns {JSX.Element} Action buttons group
- */
 const MatchSettingActionButtons = ({
     matchSetting,
     onView,

@@ -42,8 +42,6 @@ jobs:
           echo "GOOGLE_OAUTH_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_CLIENT_ID || 'test-client-id' }}" >> .env
           echo "GOOGLE_OAUTH_CLIENT_SECRET=${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET || 'test-client-secret' }}" >> .env
           echo "GOOGLE_OAUTH_REDIRECT_URI=${{ secrets.GOOGLE_OAUTH_REDIRECT_URI || 'http://localhost:8000/auth/callback' }}" >> .env
-          echo "API_TESTING_MODE=true" >> .env
-          echo "REACT_APP_TESTING_MODE=true" >> .env
 
       - name: Start services with Docker Compose
         run: |

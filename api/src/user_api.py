@@ -23,9 +23,6 @@ router = APIRouter(
 )
 
 class UserProfileResponse(BaseModel):
-    """
-    Response model for user profile details.
-    """
     user_id: int
     email: str
     first_name: str
@@ -34,12 +31,9 @@ class UserProfileResponse(BaseModel):
     score: float
     rank: Optional[int] = None
     profile_url: Optional[str] = None
-    # Common stats
     total_matches_played: int = 0
-    # Student specific
     total_tests_passed: int = 0
     total_tests_run: int = 0
-    # Teacher specific
     total_matches_created: int = 0
     total_sessions_created: int = 0
 
@@ -57,7 +51,6 @@ async def get_user_profile(
     user_id = int(current_user["sub"])
     role = current_user.get("role", "student")
     
-    # Fetch core user data
     user = UserRepository.get_by_id(db, user_id)
     if not user:
         raise HTTPException(

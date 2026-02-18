@@ -13,17 +13,13 @@ import re
 
 # Import the database dependency and ORM models
 from database import get_db
-from models import Match, GameSession, MatchesForGame, Teacher, StudentJoinGame, StudentTest, StudentSolution, StudentSolutionTest, StudentAssignedReview, StudentReviewVote
+from models import Match, GameSession, MatchesForGame, Teacher, StudentJoinGame, StudentTest, StudentSolution, StudentSolutionTest, StudentAssignedReview, StudentReviewVote, StudentBadge
 
 # ============================================================================
 # Pydantic Models
 # ============================================================================
 
 class GameSessionCreate(BaseModel):
-    """
-    Request model for creating a new match.
-    All fields are now required, matching the schema.
-    """
     match_id: List[int] = Field(..., description="List of the Match Ids to insert in the Game Session")
     name: str = Field(..., description="Name of the Game Session")
     creator_id: int = Field(..., description="Id of the Teacher that creates the Game Session")
@@ -32,16 +28,9 @@ class GameSessionCreate(BaseModel):
     duration_phase2: int = Field(..., description="Duration of the second phase")
 
 class GameSessionResponse(BaseModel):
-    """
-    Response model for a newly created Game Session.
-    Returns the id of the created Game Session.
-    """
     game_id: int = Field(..., description="Id of the newly added Game Session")
     
 class GameSessionDetail(BaseModel):
-    """
-    Response model for detailed Game Session information.
-    """
     game_id: int = Field(..., description="Id of the Game Session")
     name: str = Field(..., description="Name of the Game Session")
     creator_id: int = Field(..., description="Id of the Teacher that created the Game Session")
@@ -51,10 +40,6 @@ class GameSessionDetail(BaseModel):
     duration_phase2: int = Field(..., description="Duration of the sewcond phase")
 
 class GameSessionUpdate(BaseModel):
-    """
-    Request model for updating an existing Game Session.
-    All fields are optional, so that partial updates are possible.
-    """
     match_id: Optional[List[int]] = Field(
         None, description="List of the Match Ids to insert in the Game Session"
     )
@@ -74,10 +59,6 @@ class GameSessionUpdate(BaseModel):
 # ============================================================================
 
 def _generate_clone_name(original_name: str, creator_id: int, db: Session) -> str:
-    """
-    Generate a unique clone name with " - Copy N" suffix.
-    If the original name already has " - Copy N", extract the base name.
-    """
     copy_pattern = re.compile(r'^(.*) - Copy (\d+)$')
     match = copy_pattern.match(original_name)
 
@@ -357,6 +338,9 @@ async def delete_game_session(
         
         # Delete matches_for_game records
         db.query(MatchesForGame).filter(MatchesForGame.game_id == game_id).delete(synchronize_session=False)
+        
+        # Delete student badges earned in this game session
+        db.query(StudentBadge).filter(StudentBadge.game_session_id == game_id).delete(synchronize_session=False)
         
         # Delete the game session
         db.delete(game_session)

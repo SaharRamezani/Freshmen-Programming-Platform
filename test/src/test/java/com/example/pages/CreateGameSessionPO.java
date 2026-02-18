@@ -17,13 +17,14 @@ public class CreateGameSessionPO {
     private static final String ANTD_DIV_TABLE_XPATH = "//*[@id=\"game-session-creation-table\"]";
     private static final String TABLE_BODY_XPATH = ANTD_DIV_TABLE_XPATH + "//tbody[contains(@class,'ant-table-tbody')]";
     private static final String BUTTON_XPATH = "//*[@id=\"create-game-session-button\"]/button";
-    private static final String SUCCESS_MESSAGE_XPATH = "//div[contains(@class,'ant-message')]//span[text()='The game session has been created successfully!']";
-    private static final String WARNING_MESSAGE_XPATH = "//div[contains(@class,'ant-message')]//span[text()='You should select at least a match to create a game session']";
+    private static final String SUCCESS_MESSAGE_XPATH = "//div[contains(@class,'popup-alert')]//div[contains(@class,'alert-content') and text()='The game session has been created successfully!']";
+    private static final String WARNING_MESSAGE_XPATH = "//div[contains(@class,'popup-alert')]//div[contains(@class,'alert-content') and text()='Please select at least one match to create a game session']";
     private static final String SESSION_NAME_INPUT_XPATH = "//*[@id=\"session-name\"]";
     private static final String START_DATE_INPUT_XPATH = "//*[@id=\"start-date\"]";
     private static final String CALENDAR_OK_BUTTON_XPATH = "//button[@class='ant-btn css-dev-only-do-not-override-hofb1t ant-btn-primary ant-btn-color-primary ant-btn-variant-solid ant-btn-sm']";
     private static final String DURATION_PHASE_ONE_INPUT_XPATH = "//*[@id=\"duration_phas1\"]";
     private static final String DURATION_PHASE_TWO_INPUT_XPATH = "//*[@id=\"duration_phas2\"]";
+    private static final String SEARCH_INPUT_CSS = "input[placeholder='Search matches...']";
 
     public CreateGameSessionPO(WebDriver driver) {
         this.driver = driver;
@@ -134,5 +135,15 @@ public class CreateGameSessionPO {
         durationPhaseTwoInput.clear();
         durationPhaseTwoInput.sendKeys(duration);
     }
-        
+
+    public void searchMatch(String query) {
+        WebElement searchInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(SEARCH_INPUT_CSS)));
+        searchInput.clear();
+        searchInput.sendKeys(query);
+    }
+
+    public String getMatchNameAt(int row) {
+        WebElement nameCell = getElementAt(row, 1);
+        return nameCell.getText();
+    }
 }

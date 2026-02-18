@@ -1,24 +1,9 @@
-"""
-Repository layer for User database operations.
-
-Provides methods for reading, creating, and updating user records.
-"""
-
 from typing import Optional
 from sqlalchemy.orm import Session
 from authentication.models.user import User, UserRoleEnum
 
 
 class UserRepository:
-    """
-    Repository for User database operations.
-    
-    Provides methods for:
-    - Finding users by various identifiers
-    - Creating new users
-    - Updating user information and roles
-    """
-
     @staticmethod
     def get_by_id(db: Session, user_id: int) -> Optional[User]:
         """

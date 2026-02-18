@@ -11,9 +11,6 @@ export const SUCCESS_MESSAGES = {
   UPDATED: 'Profile updated successfully',
 };
 
-/**
- * Maps badge names to their corresponding icon paths
- */
 export const BADGE_ICON_MAP = {
   // TopN badges
   'Champion': '/badges/TopN/1.png',
@@ -29,23 +26,29 @@ export const BADGE_ICON_MAP = {
   'Bug Whisperer': '/badges/FindingCodeFailures/100.png',
 
   // CorrectUpVotes badges
-  'Sharp Eye': '/badges/CorrectUpVotes/5-2.png',
-  'Quality Checker': '/badges/CorrectUpVotes/10-1.png',
-  'Insightful Reviewer': '/badges/CorrectUpVotes/20-3.png',
-  'Truth Seeker': '/badges/CorrectUpVotes/50-2.png',
-  'Peer Review Master': '/badges/CorrectUpVotes/100-2.png',
+  'Sharp Eye': '/badges/CorrectUpVotes/5.png',
+  'Quality Checker': '/badges/CorrectUpVotes/10.png',
+  'Insightful Reviewer': '/badges/CorrectUpVotes/20.png',
+  'Truth Seeker': '/badges/CorrectUpVotes/50.png',
+  'Peer Review Master': '/badges/CorrectUpVotes/100.png',
 
   // PassTeacherTests badges
   'First Pass': '/badges/PassTeacherTests/1.png',
+  'Consistent Performer': '/badges/PassTeacherTests/5.png',
+  'Reliable Solver': '/badges/PassTeacherTests/10.png',
+  'Test Master': '/badges/PassTeacherTests/15.png',
+  'Teachers Champion': '/badges/PassTeacherTests/20.png',
+
+  // Finish Perfect badges
+  'Flawless Start': '/badges/FinishPerfectly/1.png',
+  'Clean Run': '/badges/FinishPerfectly/5.png',
+  'Precision Player': '/badges/FinishPerfectly/10.png',
+  'Perfectionist': '/badges/FinishPerfectly/15.png',
+  'Untouchable': '/badges/FinishPerfectly/20.png',
 };
 
 export const DEFAULT_BADGE_ICON = '/badges/default_badge.png';
 
-/**
- * Get badge icon path by badge name
- * @param {Object} badge - Badge object with name property
- * @returns {string} Path to badge icon
- */
 export const getBadgeIcon = (badge) => {
   return BADGE_ICON_MAP[badge.name] || DEFAULT_BADGE_ICON;
 };

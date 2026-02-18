@@ -20,7 +20,8 @@ const MatchSettingsSelector = ({
   matchSettings,
   isLoading,
   selectedValue,
-  onChange
+  onChange,
+  disabled = false,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortStrategy, setSortStrategy] = useState('latest'); // 'latest', 'name_asc', 'name_desc'
@@ -108,6 +109,7 @@ const MatchSettingsSelector = ({
             onChange={onChange}
             value={selectedValue}
             className="match-settings-radio-group"
+            disabled={disabled}
           >
             <Space direction="vertical" style={{ width: '100%' }}>
               {processedSettings.length > 0 ? (

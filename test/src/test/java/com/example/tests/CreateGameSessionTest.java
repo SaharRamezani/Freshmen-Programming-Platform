@@ -93,7 +93,7 @@ public class CreateGameSessionTest extends BaseTest  {
         createGameSessionPage.clickCheckBox(2);
         assertTrue(createGameSessionPage.isCheckBoxSelected(2));
         
-        createGameSessionPage.getButton().click();      
+        createGameSessionPage.getButton().click();
 
         WebElement alert = createGameSessionPage.waitSuccessAlert();
         

@@ -1,9 +1,3 @@
-"""
-SQLAlchemy model for the User entity.
-
-Maps to capstone_app.users table.
-"""
-
 import enum
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, Text, DateTime, Enum as SQLEnum
@@ -18,21 +12,6 @@ class UserRoleEnum(str, enum.Enum):
 
 
 class User(Base):
-    """
-    SQLAlchemy model for the 'users' table in capstone_app schema.
-    
-    Attributes:
-        id: Primary key, auto-incremented integer.
-        google_sub: Google's unique stable user identifier (unique, required).
-        email: User's email address (unique, required, mutable).
-        first_name: User's first name (required).
-        last_name: User's last name (required).
-        role: User's role (student, teacher, or admin). Defaults to 'student'.
-        score: User's score for competition/gamification. Defaults to 0.
-        profile_url: URL to user's profile picture (optional).
-        created_at: Timestamp when the user was created.
-        updated_at: Timestamp when the user was last updated.
-    """
     __tablename__ = "users"
     __table_args__ = {'schema': 'capstone_app'}
 

@@ -183,6 +183,12 @@ public class ReviewPhaseTest extends BaseTest {
         createGameSessionPO.fillStartDate(getStartDate());
         createGameSessionPO.fillDurationPhaseOne(PHASE_ONE_DURATION);
         createGameSessionPO.fillDurationPhaseTwo(PHASE_TWO_DURATION);
+        
+        // Search for the "Pointers Basics" match which uses the "Sum Vector Elements" 
+        // match setting — this ensures the CORRECT_SOLUTION_CODE (summing stdin inputs) 
+        // matches the expected test cases (e.g., "1 2 3" → "6")
+        createGameSessionPO.searchMatch("Pointers Basics");
+        sleepForCI(1000);
         createGameSessionPO.clickCheckBox(1);
         
         createGameSessionPO.getButton().click();

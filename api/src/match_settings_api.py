@@ -35,16 +35,12 @@ class TestItemResponse(BaseModel):
 
 
 class TestCreateRequest(BaseModel):
-    """Request model for creating a test case"""
     test_in: Optional[str] = None
     test_out: str
-    scope: str  # "public" or "private"
+    scope: str
 
 
 class MatchSettingResponse(BaseModel):
-    """
-    Response model for a single match setting.
-    """
     match_set_id: int = Field(..., description="Unique identifier for the match setting")
     title: str = Field(..., description="Title of the match setting")
     description: str = Field(..., description="Detailed description")
@@ -63,7 +59,6 @@ class MatchSettingResponse(BaseModel):
 
 
 class MatchSettingCreateRequest(BaseModel):
-    """Request model for creating a new match setting"""
     title: str
     description: str
     reference_solution: str
@@ -77,7 +72,6 @@ class MatchSettingCreateRequest(BaseModel):
 
 
 class MatchSettingUpdateRequest(BaseModel):
-    """Request model for updating an existing match setting"""
     title: Optional[str] = None
     description: Optional[str] = None
     reference_solution: Optional[str] = None
@@ -91,7 +85,6 @@ class MatchSettingUpdateRequest(BaseModel):
 
 
 class TestResult(BaseModel):
-    """Result of running a single test"""
     test_in: Optional[str]
     test_out: str
     actual_output: str

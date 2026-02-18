@@ -53,7 +53,6 @@ const CreateMatchSettingView = ({
             <div className="create-match-setting-card">
                 {/* Header */}
                 <div className="page-header">
-                    <h2>{isEditMode ? 'Edit Match Setting' : 'Create Match Setting'}</h2>
                     <Tooltip title="Go Back">
                         <Button
                             id="back-to-home-button"
@@ -63,6 +62,8 @@ const CreateMatchSettingView = ({
                             size="large"
                         />
                     </Tooltip>
+                    <h2>{isEditMode ? 'Edit Match Setting' : 'Create Match Setting'}</h2>
+                    <span />
                 </div>
 
                 {/* Match Details */}

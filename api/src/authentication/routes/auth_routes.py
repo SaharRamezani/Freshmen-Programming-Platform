@@ -1,13 +1,3 @@
-"""
-API route definitions for authentication domain.
-
-Handles:
-- Google OAuth callback endpoint
-- Token refresh endpoint
-- Token revocation endpoint (logout)
-- Token validation endpoint (optional)
-"""
-
 import logging
 import os
 from datetime import timedelta
@@ -72,12 +62,7 @@ else:
     description="Redirects user to Google for authentication"
 )
 async def initiate_oauth(request: Request):
-    """
-    Initiate Google OAuth flow.
-    Redirects user to Google's authorization page.
-    """
     try:
-        # Validate OAuth configuration before proceeding
         if not GOOGLE_OAUTH_CLIENT_ID:
             logger.error("GOOGLE_OAUTH_CLIENT_ID is not set")
             raise ConfigurationError("Google OAuth client ID is not configured")
@@ -90,7 +75,6 @@ async def initiate_oauth(request: Request):
         
         redirect_uri = GOOGLE_OAUTH_REDIRECT_URI
         
-        # Try to access the OAuth client (will raise AttributeError if not registered)
         try:
             google_client = oauth.google
         except AttributeError:

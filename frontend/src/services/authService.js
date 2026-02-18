@@ -1,56 +1,25 @@
-/**
- * Authentication Service
- * Handles authentication state and token validation
- */
-
 import { API_BASE_URL } from "./config";
 
-/**
- * Auth enable/disable controls
- *
- * - Build-time default is controlled by REACT_APP_TESTING_MODE or REACT_APP_AUTH_ENABLED.
- * - REACT_APP_TESTING_MODE takes precedence for consistency with backend.
- * - Runtime override is stored in localStorage to allow quick toggling in dev/tests.
- *
- * IMPORTANT: CRA/Vite style env vars are baked at build time; changing them requires rebuild.
- */
-// Auth enabled by default
-const AUTH_ENABLED_DEFAULT = true;
+// Auth enabled by default unless testing mode is on or explicitly disabled
+const AUTH_ENABLED_DEFAULT = process.env.REACT_APP_TESTING_MODE === 'true' 
+  ? false 
+  : (process.env.REACT_APP_AUTH_ENABLED === 'false' ? false : true);
 
-/**
- * Dev mode flag key in localStorage
- */
 const DEV_MODE_KEY = "dev_mode_bypass";
 
-/**
- * Determine whether authentication is enabled.
- * If auth is disabled, route guards and token validation will be bypassed.
- */
 export const isAuthEnabled = () => {
   return AUTH_ENABLED_DEFAULT;
 };
 
-
-/**
- * Check if dev mode bypass is enabled
- * Dev mode must be explicitly enabled via localStorage flag
- */
 export const isDevModeEnabled = () => {
   return localStorage.getItem(DEV_MODE_KEY) === "true";
 };
 
-/**
- * Enable dev mode bypass (skip authentication)
- */
 export const enableDevMode = () => {
   localStorage.setItem(DEV_MODE_KEY, "true");
-  // Set a dummy token so hasToken() returns true
   localStorage.setItem("token", "dev_mode_token");
 };
 
-/**
- * Disable dev mode bypass
- */
 export const disableDevMode = () => {
   localStorage.removeItem(DEV_MODE_KEY);
   if (localStorage.getItem("token") === "dev_mode_token") {
@@ -58,41 +27,23 @@ export const disableDevMode = () => {
   }
 };
 
-/**
- * Check if user has a token stored
- */
 export const hasToken = () => {
   return !!localStorage.getItem("token");
 };
 
-/**
- * Get the stored access token
- */
 export const getToken = () => {
   return localStorage.getItem("token");
 };
 
-/**
- * Remove the stored token (logout)
- */
 export const removeToken = () => {
   localStorage.removeItem("token");
 };
 
-/**
- * Store the access token
- */
 export const setToken = (token) => {
   localStorage.setItem("token", token);
 };
 
-/**
- * Validate the current token with the backend
- * Returns true if token is valid, false otherwise
- * In dev mode, returns true if dev mode is enabled
- */
 export const validateToken = async () => {
-  // Global auth kill-switch (used in tests / local development)
   if (!isAuthEnabled()) {
     return true;
   }

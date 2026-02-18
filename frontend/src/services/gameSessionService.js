@@ -1,15 +1,6 @@
 import { API_BASE_URL, API_ENDPOINTS } from "./config";
 import { apiFetch } from "./api";
 
-/**
- * Creates a new game session with the specified match IDs, creator ID, name, and start date.
- *
- * @param {Array<string|number>} matchIds - The IDs of the matches to include in the session.
- * @param {string|number} creatorId - The ID of the user creating the session.
- * @param {string} name - The name of the game session.
- * @param {string} startDate - The start date and time of the session (ISO format).
- * @returns {Promise<Object>} A promise that resolves to the created game session object.
- */
 export async function createGameSession(matchIds, creatorId, name, startDate, duration_phase1, duration_phase2) {
   try {
     const url = new URL(API_ENDPOINTS.GAME_SESSIONS, API_BASE_URL);
@@ -67,12 +58,6 @@ export async function getGameSessionsByCreator(creatorId) {
   }
 }
 
-/**
- * Deletes a game session with the specified game ID.
- *
- * @param {string|number} gameId - The ID of the game session to delete.
- * @returns {Promise<boolean>} A promise that resolves to true if the deletion was successful.
- */
 export async function deleteGameSession(gameId) {
   try {
     const url = new URL(`${API_ENDPOINTS.GAME_SESSIONS}/${gameId}`, API_BASE_URL);

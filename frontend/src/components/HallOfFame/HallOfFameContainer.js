@@ -93,11 +93,13 @@ const HallOfFameContainer = () => {
         }, userPage !== currentPage ? 500 : 100);
     };
 
-    // Render rank with medal icons for top 3
-    const renderRank = (rank) => {
-        if (rank === 1) return <span className="medal gold" data-testid="medal-gold">🥇</span>;
-        if (rank === 2) return <span className="medal silver" data-testid="medal-silver">🥈</span>;
-        if (rank === 3) return <span className="medal bronze" data-testid="medal-bronze">🥉</span>;
+    // Render rank with medal icons for top 3, but only if score > 0
+    const renderRank = (rank, record) => {
+        if (record && record.score > 0) {
+            if (rank === 1) return <span className="medal gold" data-testid="medal-gold">🥇</span>;
+            if (rank === 2) return <span className="medal silver" data-testid="medal-silver">🥈</span>;
+            if (rank === 3) return <span className="medal bronze" data-testid="medal-bronze">🥉</span>;
+        }
         return <span className="rank-number" data-testid="rank-number">{rank}</span>;
     };
 

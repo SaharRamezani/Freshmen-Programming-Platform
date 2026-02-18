@@ -60,7 +60,9 @@ const MatchFormFields = ({
   onFieldsChange,
   onReset,
   isSubmitting,
-  isFormValid
+  isFormValid,
+  isViewMode = false,
+  isEditMode = false,
 }) => {
   return (
     <div className="form-fields-column">
@@ -99,6 +101,7 @@ const MatchFormFields = ({
             size="large"
             showCount
             maxLength={MAX_TITLE_LENGTH}
+            disabled={isViewMode}
           />
         </Form.Item>
 
@@ -122,6 +125,7 @@ const MatchFormFields = ({
             id="difficulty-select"
             placeholder="Select difficulty level"
             size="large"
+            disabled={isViewMode}
           >
             {DIFFICULTY_LEVELS.map(level => (
               <Option key={level.value} value={level.value}>
@@ -153,6 +157,7 @@ const MatchFormFields = ({
             style={{ width: '100%' }}
             size="large"
             placeholder={`Enter number of reviewers (default: ${DEFAULT_REVIEW_NUMBER})`}
+            disabled={isViewMode}
           />
         </Form.Item>
 
@@ -174,6 +179,7 @@ const MatchFormFields = ({
             id="first-phase-duration-input"
             size="large"
             placeholder="Enter Duration in minutes"
+            disabled={isViewMode}
           />
         </Form.Item>
 
@@ -195,37 +201,42 @@ const MatchFormFields = ({
             id="second-phase-duration-input"
             size="large"
             placeholder="Enter duration in minutes"
+            disabled={isViewMode}
           />
         </Form.Item>
 
         {/* Action Buttons */}
-        <Form.Item>
-          <Space size="middle">
-            <Button
-              id="save-match-button"
-              type="primary"
-              htmlType="submit"
-              icon={<SaveOutlined />}
-              loading={isSubmitting}
-              size="large"
-              disabled={!isFormValid || isSubmitting}
-            >
-              Save Match
-            </Button>
-            <Tooltip title="Clear all form fields and start over">
+        {!isViewMode && (
+          <Form.Item>
+            <Space size="middle">
               <Button
-                id="reset-button"
-                danger
-                icon={<ReloadOutlined />}
-                onClick={onReset}
+                id="save-match-button"
+                type="primary"
+                htmlType="submit"
+                icon={<SaveOutlined />}
+                loading={isSubmitting}
                 size="large"
-                disabled={isSubmitting}
+                disabled={!isFormValid || isSubmitting}
               >
-                Reset
+                {isEditMode ? 'Update Match' : 'Save Match'}
               </Button>
-            </Tooltip>
-          </Space>
-        </Form.Item>
+              {!isEditMode && (
+                <Tooltip title="Clear all form fields and start over">
+                  <Button
+                    id="reset-button"
+                    danger
+                    icon={<ReloadOutlined />}
+                    onClick={onReset}
+                    size="large"
+                    disabled={isSubmitting}
+                  >
+                    Reset
+                  </Button>
+                </Tooltip>
+              )}
+            </Space>
+          </Form.Item>
+        )}
       </Form>
     </div>
   );

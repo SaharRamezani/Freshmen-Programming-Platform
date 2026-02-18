@@ -429,7 +429,7 @@ const useCreateMatchSetting = () => {
             handleRemoveInputRow,
             handleAddInputRow,
             handleDismissAlert: () => setAlert(null),
-            onBack: () => navigate(-1),
+            onBack: () => navigate('/home'),
         }
     };
 };

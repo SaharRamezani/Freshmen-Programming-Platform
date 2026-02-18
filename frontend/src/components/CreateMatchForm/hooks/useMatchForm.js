@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { createMatch } from '../../../services/matchService';
+import { useState, useCallback } from 'react';
+import { createMatch, getMatch, updateMatch } from '../../../services/matchService';
 import { DEFAULT_CREATOR_ID, REQUIRED_FIELDS, ERROR_MESSAGES } from '../constants';
 import { isNetworkError } from '../../../utils/errorUtils';
 import { getUserProfile } from '../../../services/userService';
@@ -12,7 +12,7 @@ import { getUserProfile } from '../../../services/userService';
  * @param {Function} showAlert - Function to display alerts
  * @returns {Object} Form state and handlers
  */
-export const useMatchForm = (form, showAlert) => {
+export const useMatchForm = (form, showAlert, isEditMode = false, matchId = null) => {
   const [selectedMatchSetting, setSelectedMatchSetting] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
@@ -74,12 +74,16 @@ export const useMatchForm = (form, showAlert) => {
         duration_phase2: values.duration_phase2,
       };
 
-      const createdMatch = await createMatch(matchData);
-      showAlert('success', `Match "${createdMatch.title}" has been created successfully!`);
-
-      form.resetFields();
-      setSelectedMatchSetting(null);
-      setIsFormValid(false);
+      if (isEditMode && matchId) {
+        const updatedMatch = await updateMatch(matchId, matchData);
+        showAlert('success', `Match "${updatedMatch.title}" has been updated successfully!`);
+      } else {
+        const createdMatch = await createMatch(matchData);
+        showAlert('success', `Match "${createdMatch.title}" has been created successfully!`);
+        form.resetFields();
+        setSelectedMatchSetting(null);
+        setIsFormValid(false);
+      }
 
     } catch (error) {
       let errorMessage;
@@ -109,6 +113,26 @@ export const useMatchForm = (form, showAlert) => {
     resetAlert();
   };
 
+  /**
+   * Loads an existing match for edit/view mode
+   */
+  const loadMatch = useCallback(async (id) => {
+    try {
+      const match = await getMatch(id);
+      form.setFieldsValue({
+        title: match.title,
+        difficulty_level: match.difficulty_level,
+        review_number: match.review_number,
+        duration_phase1: String(match.duration_phase1),
+        duration_phase2: String(match.duration_phase2),
+      });
+      setSelectedMatchSetting(match.match_set_id);
+      setIsFormValid(true);
+    } catch (error) {
+      showAlert('error', 'Failed to load match data.');
+    }
+  }, [form, showAlert]);
+
   return {
     selectedMatchSetting,
     isSubmitting,
@@ -116,7 +140,8 @@ export const useMatchForm = (form, showAlert) => {
     handleFormChange,
     handleMatchSettingChange,
     handleSubmit,
-    handleReset
+    handleReset,
+    loadMatch,
   };
 };
 

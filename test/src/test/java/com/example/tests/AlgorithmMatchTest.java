@@ -4,6 +4,7 @@ import com.example.pages.AlgorithmMatchPO;
 import com.example.pages.CreateGameSessionPO;
 import com.example.pages.GameSessionMNGPO;
 import com.example.pages.JoinGameSessionPO;
+import com.example.pages.LobbyPO;
 import com.example.pages.LoginPO;
 import com.example.pages.WaitingRoomPO;
 
@@ -34,6 +35,7 @@ public class AlgorithmMatchTest extends BaseTest {
     private static WebDriver studentDriver;
     private static LoginPO studentLoginPO;
     private static JoinGameSessionPO joinGameSessionPO;
+    private static LobbyPO studentLobbyPO;
     private static AlgorithmMatchPO studentMatchPage;
     
     private static String testSessionName;
@@ -93,6 +95,7 @@ public class AlgorithmMatchTest extends BaseTest {
         studentDriver = createStudentDriver();
         studentLoginPO = new LoginPO(studentDriver);
         joinGameSessionPO = new JoinGameSessionPO(studentDriver);
+        studentLobbyPO = new LobbyPO(studentDriver);
         studentMatchPage = new AlgorithmMatchPO(studentDriver);
         
         // matchPage points to student's match page for tests
@@ -162,7 +165,12 @@ public class AlgorithmMatchTest extends BaseTest {
         gameSessionMNGPO.waitForRow(testSessionName);
         int rowIndex = gameSessionMNGPO.gameSessionIndex(testSessionName);
         gameSessionMNGPO.getStartButtonAt(rowIndex).click();
-        sleepForCI(2000);
+        sleepForCI(3000);
+        
+        // Verify we're on the pre-start page
+        String currentUrl = driver.getCurrentUrl();
+        assertTrue(currentUrl.contains("/pre-start-game-session/"), 
+            "Teacher should be on the pre-start game session page. Current URL: " + currentUrl);
     }
     
     private void studentJoinsGameSession() {
@@ -176,16 +184,20 @@ public class AlgorithmMatchTest extends BaseTest {
         
         joinGameSessionPO.waitForLoadingComplete();
         
-        // Wait for our specific session to be available
-        if (!joinGameSessionPO.isGameSessionAvailableByName(testSessionName)) {
-            joinGameSessionPO.waitForSessionAvailableByName(testSessionName, 30);
+        // Wait for the game session card to appear
+        if (!joinGameSessionPO.isGameSessionAvailable()) {
+            joinGameSessionPO.waitForSessionAvailable(30);
         }
         
-        // Join the specific session by name
-        if (joinGameSessionPO.isGameSessionAvailableByName(testSessionName)) {
-            joinGameSessionPO.clickJoinButtonForSession(testSessionName);
-            sleepForCI(3000);
-        }
+        // Click the "Join Game" button on the card
+        assertTrue(joinGameSessionPO.isGameSessionAvailable(),
+            "Game session card should be visible on the join page");
+        joinGameSessionPO.clickJoinButton();
+        sleepForCI(3000);
+        
+        // After clicking join, the student is redirected to the lobby
+        assertTrue(joinGameSessionPO.waitForLobbyRedirect(),
+            "Student should be redirected to the lobby after joining");
     }
     
     private void teacherStartsGame() {
@@ -199,11 +211,23 @@ public class AlgorithmMatchTest extends BaseTest {
     }
     
     private void studentGoesToPhaseOne() {
-        // Student should be redirected to phase one after game starts
-        // Or navigate to join page and continue
+        // If student is already on phase-one, nothing to do
+        if (studentDriver.getCurrentUrl().contains("/phase-one")) {
+            return;
+        }
+        
+        // If student is on the lobby, wait for the auto-redirect to /phase-one
+        // (the lobby polls the server and redirects when the game starts)
+        if (studentDriver.getCurrentUrl().contains("/lobby")) {
+            assertTrue(studentLobbyPO.waitForRedirectToPhaseOne(60),
+                "Student should be auto-redirected from lobby to phase-one after teacher starts the game");
+            sleepForCI(2000);
+            return;
+        }
+        
+        // Fallback: go to join page and use the active game banner to re-enter
         studentDriver.get(BASE_URL + "/join-game-session");
         sleepForCI(2000);
-        
         joinGameSessionPO.waitForLoadingComplete();
         
         if (joinGameSessionPO.hasActiveGameBanner()) {

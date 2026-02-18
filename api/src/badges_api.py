@@ -242,10 +242,6 @@ def _count_flawless_sessions(db: Session, student_id: int) -> int:
 
 @router.post("/evaluate/{game_session_id}")
 def evaluate_badges(game_session_id: int, db: Session = Depends(get_db)):
-    """
-    Evaluate and assign badges for all students in a game session.
-    Idempotent: checks if badge already exists before assigning.
-    """
     # 1. Hall of Fame (Top-N) - Based on GLOBAL leaderboard position
     scores = get_game_session_scores_list(db, game_session_id)
     ranked_students = _assign_ranks(scores)
@@ -263,7 +259,7 @@ def evaluate_badges(game_session_id: int, db: Session = Depends(get_db)):
         if rank <= 10:
             _award_badge_if_not_exists(db, student_id, "Rising Star", game_session_id)
 
-    # 2. Bug Hunter (Cumulative failing tests found)
+    # 2. Bug Hunter
     # Count valid 'incorrect' votes (which means reviewer found a bug in someone else's code)
     bug_counts = db.query(
         StudentAssignedReview.student_id,

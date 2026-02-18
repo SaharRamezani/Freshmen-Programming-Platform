@@ -17,17 +17,6 @@ const { TextArea } = Input;
 const { Title, Text } = Typography;
 const { Option } = Select;
 
-/**
- * MatchSettingEditModal - Modal component for editing match settings
- * 
- * @param {Object} props
- * @param {boolean} props.visible - Whether modal is visible
- * @param {Object} props.matchSetting - Match setting to edit
- * @param {boolean} props.loading - Loading state for save operation
- * @param {Function} props.onSave - Callback when save is clicked
- * @param {Function} props.onCancel - Callback when modal is closed
- * @returns {JSX.Element} Modal component
- */
 const MatchSettingEditModal = ({
     visible,
     matchSetting,
