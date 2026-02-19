@@ -51,6 +51,3 @@ This document outlines the architectural and design patterns identified in this 
 ### 2. Health Check Pattern
 *   **Location**: `docker-compose.yml` (e.g., `db` service healthcheck)
 *   **Purpose**: Ensures the API only starts once the database is fully ready to accept connections.
-
-### 3. Distributed Mutex (Lock Pattern)
-*   **Context**: Implemented in entrypoint scripts to manage resource contention during initialization in shared volume environments.
